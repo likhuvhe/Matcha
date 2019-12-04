@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const router = express.Router()
 const db = require('../model/db')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const collection = 'users'
 db.connect()
@@ -22,15 +23,22 @@ router.post('/login', (req, res) => {
     res.redirect('/login')
 })
 router.post('/register', (req, res) => {
-    let pass1 = bcrypt.hashSync(req.body.pwd, 10)
-    let pass2 = bcrypt.hashSync(req.body.pwd1, 10)
-    
-    console.log(`'<br>'${pass2}`)
-    console.log(`'<br>'${pass1}`)
-    if (pass1 === pass2)
-        console.log('we are the same')
-    const user = req.body
-    db.getDB().collection(collection).insertOne(user)
+    const email = req.body.email
+    const username = req.body.username
+    const firstName = req.body.firstname
+    const lastName = req.body.lastname 
+    const password = req.body.pwd
+
+    bcrypt.hash(password, saltRounds, function(err, hash) {
+        const user = {
+            username: username,
+            email: email,
+            firstname: firstName,
+            lastname: lastName,
+            password: hash
+        }
+        db.getDB().collection(collection).insertOne(user)
+      });
     res.send('Open your email and follow the instructions to verify your account. <p></p> <a href="/login">login</a>')
 })
 

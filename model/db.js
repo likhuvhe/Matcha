@@ -1,7 +1,7 @@
 const mongoClient = require('mongodb').MongoClient
 const ObjectID = require('mongodb').ObjectID
 const dbname = 'matcha'
-// const url = 'mongodb://localhost:27017'
+
 const uri = "mongodb+srv://lkhuvhe:Kli%401991@cluster0-hc9qp.mongodb.net/test?retryWrites=true&w=majority"
 const mongoOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 

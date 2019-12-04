@@ -7,30 +7,14 @@ const indexRouter = require('./routes/index')
 const db = require('./model/db')
 const collection = 'users'
 db.connect()
-// const urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 
 app.set('view engine', 'ejs')
-app.set('views',__dirname + '/views')
+app.set('views',__dirname + '/views') // set the path
 app.set('layout', 'layouts/layout')
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
-
-// const MongoClient = require('mongodb').MongoClient;
-// // const uri = "mongodb+srv://lkhuvhe:Kli%401991@cluster0-hc9qp.mongodb.net/test?retryWrites=true&w=majority";
-// const url = "mongodb://localhost:27017"
-// const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-// client.connect(err => {
-//     if (err)
-//     {
-//         console.log('error occured while connecting to MongoDB')
-//     }
-//    else
-//      console.log('Connected to MongoDB')
-//  const collection = client.db("metcha").collection("users");
-//     // perform actions on the collection object
-//     client.close();
-// });
 
 app.use('/', indexRouter)
 

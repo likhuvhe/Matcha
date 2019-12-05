@@ -5,6 +5,8 @@ const db = require('../model/db')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const regValid = require('../public/regvalidate')
+
 const collection = 'users'
 db.connect()
 
@@ -28,7 +30,7 @@ router.post('/register', (req, res) => {
     const firstName = req.body.firstname
     const lastName = req.body.lastname 
     const password = req.body.pwd
-
+    // regValid.validateFirstname(firstName)
     bcrypt.hash(password, saltRounds, function(err, hash) {
         const user = {
             username: username,
@@ -39,7 +41,7 @@ router.post('/register', (req, res) => {
         }
         db.getDB().collection(collection).insertOne(user)
       });
-    res.send('Open your email and follow the instructions to verify your account. <p></p> <a href="/login">login</a>')
+    //res.send('Open your email and follow the instructions to verify your account. <p></p> <a href="/login">login</a>')
 })
 
 module.exports = router

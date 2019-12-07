@@ -1,5 +1,6 @@
 const express = require('express')
 var nodemailer = require('nodemailer');
+const randomstring = require('randomstring')
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -8,13 +9,13 @@ var transporter = nodemailer.createTransport({
     pass: 'matcha123'
   }
 });
-
+const token = randomstring.generate()
 const confirmAccount = function(email, redirect){
     var mailOptions = {
         from: 'matchawtc2019@gmail.com',
         to: email,
         subject: 'Confirm your account',
-        html: '<a href="../registerlogin/login.ejs"> click here to activate your acount </a>'
+        html: '<a href=\"http://localhost:5000/login?vkey='+`${token}`+'"> click here to activate your acount </a>'
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -26,4 +27,4 @@ const confirmAccount = function(email, redirect){
       });
 }
 
-module.exports = {confirmAccount}
+module.exports = {confirmAccount, token}

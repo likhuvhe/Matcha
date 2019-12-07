@@ -30,6 +30,9 @@ router.post('/register', (req, res) => {
     const firstName = req.body.firstname
     const lastName = req.body.lastname 
     const password = req.body.pwd
+    const vkey = mails.token
+    const verified = Boolean(false)
+    console.log(verified)
     
     db.getDB().collection(collection).find({$or:[{username: username} , {email: email}]}).toArray(function(err, result) {
         if (err) throw err;
@@ -51,7 +54,9 @@ router.post('/register', (req, res) => {
                         email: email,
                         firstname: firstName,
                         lastname: lastName,
-                        password: hash
+                        password: hash,
+                        vkey: vkey,
+                        verified: verified
                     }
                     db.getDB().collection(collection).insertOne(user)
                     mails.confirmAccount(email)

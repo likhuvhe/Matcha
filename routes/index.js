@@ -4,7 +4,6 @@ const router = express.Router()
 const mails = require('../model/email')
 const db = require('../model/db')
 
-const url = require('url');
 // const emails = require('./model/email')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -21,10 +20,27 @@ router.get('/register', (req, res) => {
     res.render('./registerLogin/register')
 })
 router.get('/login', (req, res) => {
-    // console.log(req.cookies)
-    console.log()
+    // const toconfirm = req.query.vkey
+    console.log(toconfirm)
+    db.getDB().collection(collection).find({vkey:req.query.vkey}).toArray(function(err, result) {
+        if (err) throw err;
+        // console.log(result)
+        if (result.length >= 1){
+            db.getDB().collection('users').update(
+                { _id: result[0]._id},
+                { $set:
+                    {
+                        verified: true,
+                        vkey: ''
+                    }
+                })
+        } else{
+            console.log('invalid token')
+        }
+    })
     res.render('./registerLogin/login')
 })
+
 router.post('/login', (req, res) => {
     res.redirect('/login')
 })
@@ -71,8 +87,11 @@ router.post('/register', (req, res) => {
             }else{
                 res.redirect('/register')
             }
-        }  
+        } 
     });
 })
+// router.get('/login', (req, res) => {
+//     console.log(req.query.vkey)
+// })
 
 module.exports = router

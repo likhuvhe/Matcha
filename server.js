@@ -3,6 +3,7 @@ const session = require('express-session')
 const app = express()
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 
 
 const indexRouter = require('./routes/index')
@@ -18,6 +19,7 @@ app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 app.use('/', indexRouter)
 

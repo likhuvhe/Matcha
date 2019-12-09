@@ -5,8 +5,8 @@ let collection = 'users'
 
 const validateFirstname = function(firstName)
 {
-    firstName = firstName.trim()
-    if (firstName === '')
+    name = firstName.trim()
+    if (name.trim() === '')
     {
         console.log('Error: firstName empty')
         return false
@@ -23,8 +23,8 @@ const validateFirstname = function(firstName)
 }
 const validateLastname = function(lastName)
 {
-    lastName = lastName.trim()
-    if (lastName === '')
+    name = lastName.trim()
+    if (name === '')
     {
         
         console.log('Error: Last Name empty')
@@ -42,8 +42,8 @@ const validateLastname = function(lastName)
 }
 const validateUsername = function(userName)
 {
-    userName = userName.trim()
-    if (userName === '')
+    name = userName.trim()
+    if (name === '')
     {
         
         console.log('Error: User Name empty')
@@ -61,8 +61,8 @@ const validateUsername = function(userName)
 }
 const validateEmail = function(email)
 {
-    email = email.trim()
-    if (email === '')
+    email1 = email.trim()
+    if (email1 === '')
     {
         
         console.log('Error: Email empty')
@@ -81,7 +81,8 @@ const validateEmail = function(email)
 
 const validatePassword = function(password)
 {
-    if (password === '')
+    password1 = password.trim()
+    if (password1 === '')
     { 
         console.log('Error: password empty')
         return false

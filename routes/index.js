@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const router = express.Router()
 const mails = require('../model/email')
 const db = require('../model/db')
+
+const url = require('url');
 // const emails = require('./model/email')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -19,6 +21,8 @@ router.get('/register', (req, res) => {
     res.render('./registerLogin/register')
 })
 router.get('/login', (req, res) => {
+    // console.log(req.cookies)
+    console.log()
     res.render('./registerLogin/login')
 })
 router.post('/login', (req, res) => {

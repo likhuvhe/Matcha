@@ -21,8 +21,8 @@ router.get('/register', (req, res) => {
 })
 router.get('/login', (req, res) => {
     // const toconfirm = req.query.vkey
-    console.log(toconfirm)
-    db.getDB().collection(collection).find({vkey:req.query.vkey}).toArray(function(err, result) {
+    //console.log(toconfirm)
+    db.getDB().collection('users').find({vkey:req.query.vkey}).toArray(function(err, result) {
         if (err) throw err;
         // console.log(result)
         if (result.length >= 1){
@@ -42,7 +42,29 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    res.redirect('/login')
+    const username = req.body.username
+    const password = req.body.pwd
+    db.getDB().collection('users').find({username: username}).toArray(function(err, result){
+        if (err) throw err;
+        // console.log(result)
+        if (result.length >= 1){
+            if (result[0].verified === false){
+                console.log('please Verify your account')
+                res.redirect('/login')
+            }
+            else if (bcrypt.compareSync(password, result[0].password)){
+                console.log('successfully Logged in')
+                res.send('success log in')
+            }
+            else{
+                console.log('invalid password')
+                res.redirect('/login')
+            }
+        } else{
+            console.log('invalid username')
+            res.redirect('/login')
+        }
+    })
 })
 router.post('/register', (req, res) => {
     const email = req.body.email
@@ -82,16 +104,15 @@ router.post('/register', (req, res) => {
                     mails.confirmAccount(email)
                 });
                   console.log('successfuly registered')
-                  res.redirect('/register')
+                  res.send('An email with instruction to validate your account has been sent to you email address <br><a href="http://localhost:5000/login">LOG IN</a>')
                   
             }else{
                 res.redirect('/register')
             }
         } 
     });
+    // module.exports = username
 })
-// router.get('/login', (req, res) => {
-//     console.log(req.query.vkey)
-// })
+
 
 module.exports = router

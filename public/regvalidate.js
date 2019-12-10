@@ -97,7 +97,7 @@ const validatePassword = function(password)
         return false
     }
 }
-const matchPassword = function(pass1, pass2)
+const matchPassword = function(pass1, pass2) 
 {
    if (pass1 === pass2)
    {

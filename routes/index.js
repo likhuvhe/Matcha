@@ -75,12 +75,13 @@ router.post('/register', (req, res) => {
     const vkey = mails.token
     const verified = Boolean(false)
     console.log(verified)
+    console.log(email)
     
     db.getDB().collection(collection).find({$or:[{username: username} , {email: email}]}).toArray(function(err, result) {
         if (err) throw err;
         if (result.length >= 1){
             console.log('username or email alredy exist!')
-            res.redirect('/register')
+            res.send('/register')
         }
         else{
             if( regValid.validateEmail(email) && 
@@ -107,7 +108,7 @@ router.post('/register', (req, res) => {
                   res.send('An email with instruction to validate your account has been sent to you email address <br><a href="http://localhost:5000/login">LOG IN</a>')
                   
             }else{
-                res.redirect('/register')
+                res.json({anan:'anvalid username'})
             }
         } 
     });

@@ -1,9 +1,12 @@
 import React from 'react';
 import useForm from 'react-hook-form';
+// import importScripts from 'import-scripts'
+ 
+// importScripts('validateReg.js')
 
 export default function Register(props) {
     const {register, handleSubmit} = useForm()
-    let b = '';
+
     const  onSubmit = async(data) => {
         const response = await fetch('/register', {
             method: 'POST',
@@ -12,26 +15,36 @@ export default function Register(props) {
              'Content-Type': 'application/json'
             }, 
             body: JSON.stringify(data)});
-            let a = await response.json()
-            b = a.anan
-            document.getElementById("a").innerHTML = b+`<br/>`
-            console.log(a)
-            // props.history.push('/login')
+            let res = await response.json()
+        // //     respF = res.regFeiled
+        // //     respS = res.regSuccess
+        // //    document.getElementById("feil-reg").innerHTML = respF +`<br/>`
+        // //     document.getElementById("success-reg").innerHTML = respS +`<br/>` 
+        console.log(res)
+        // console.log(res.message)   
+        if (res.fResult === true){
+                props.history.push('/login')
+                // redirect('/register')
+        }
+        else{
+            props.history.push('/register')
+        }
         
 }
+
     return(
         <div className="reg-form">
+        
         <center>
         <h1>Sign Up for Matcha</h1>
-        <form action="" onSubmit = {handleSubmit(onSubmit)}>
-         <input type="email" name="email" placeholder="Email Address" ref={register}></input><br/>
-         <input type="text" name="username" placeholder="username" ref={register}></input><br/>
-         <span id="a"></span>
-         <input type="text" name="firstname" placeholder="First Name" ref={register}></input><br/>
-         <input type="text" name="lastname" placeholder="Lastname" ref={register}></input><br/>
+        <form action="" id="regForm" onSubmit = {handleSubmit(onSubmit)}>
+         <input type="email" name="email" id="email" placeholder="Email Address" ref={register}></input><br/>
+         <input type="text" name="username"  id="userName" placeholder="username" ref={register}></input><br/>
+         <input type="text" name="firstname" id="firstName" placeholder="First Name" onfocusout="ValidateFirstName" ref={register}></input><br/>
+         <input type="text" name="lastname" id="lastName" placeholder="Lastname" ref={register}></input><br/>
          <input type="password" name="pwd" id="pwd" placeholder="password" ref={register}></input><br/>
          <input type="password" name="pwd1" id="pwd1" placeholder="Confirm password" ref={register} ></input><br/>
-         <button type="submit">Register</button>
+         <button type="submit">Register</button><br/>
        </form>
         </center>
      </div>

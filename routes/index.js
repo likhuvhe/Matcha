@@ -74,22 +74,22 @@ router.post('/register', (req, res) => {
     const password = req.body.pwd
     const vkey = mails.token
     const verified = Boolean(false)
-    console.log(verified)
-    console.log(email)
     
     db.getDB().collection(collection).find({$or:[{username: username} , {email: email}]}).toArray(function(err, result) {
         if (err) throw err;
         if (result.length >= 1){
             console.log('username or email alredy exist!')
-            res.send('/register')
+            res.json({result: false, message:'username or email alredy exist!'})
         }
         else{
-            if( regValid.validateEmail(email) && 
-                regValid.validateUsername(username) &&
-                regValid.validateFirstname(firstName) &&
-                regValid.validateLastname(lastName) &&
-                regValid.validatePassword(password) &&
-                regValid.matchPassword(password, req.body.pwd1))
+            // res.json(regValid.validateEmail(email))
+            // res.json(regValid.validateEmail(email).message)
+            if( regValid.validateEmail(email).result === true && 
+                regValid.validateUsername(username).result=== true &&
+                regValid.validateFirstname(firstName).result === true &&
+                regValid.validateLastname(lastName).result === true &&
+                regValid.validatePassword(password).result === true &&
+                regValid.matchPassword(password, req.body.pwd1).result === true)
             {
                 bcrypt.hash(password, saltRounds, function(err, hash) {
                     const user = {
@@ -105,10 +105,23 @@ router.post('/register', (req, res) => {
                     mails.confirmAccount(email)
                 });
                   console.log('successfuly registered')
-                  res.send('An email with instruction to validate your account has been sent to you email address <br><a href="http://localhost:5000/login">LOG IN</a>')
+                  res.json({fResult: true})
                   
-            }else{
-                res.json({anan:'anvalid username'})
+            }
+            else{
+                if (regValid.validateEmail(email).result === false){
+                    res.json(regValid.validateEmail(email))
+                }else if(regValid.validateUsername(username).result=== false){
+                    res.json(regValid.validateUsername(username))
+                }else if(regValid.validateFirstname(firstName).result === false){console.log('where');
+                    res.json(regValid.validateFirstname(firstName)); 
+                }else if(regValid.validateLastname(lastName).result === false){console.log('here');
+                    res.json(regValid.validateLastname(lastName)); 
+                }else if (regValid.validatePassword(password).result === false){
+                    res.json(regValid.validatePassword(password))
+                }else{
+                    res.json(regValid.matchPassword(password, req.body.pwd1))
+                }
             }
         } 
     });

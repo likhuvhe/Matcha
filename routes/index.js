@@ -50,19 +50,19 @@ router.post('/login', (req, res) => {
         if (result.length >= 1){
             if (result[0].verified === false){
                 console.log('please Verify your account')
-                res.redirect('/login')
+                res.json({result: true, message: 'please Verify your account'})
             }
             else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
-                res.send('success log in')
+                res.json({result:true})
             }
             else{
                 console.log('invalid password')
-                res.redirect('/login')
+                res.json({result: false, message:'invalid password'})
             }
         } else{
-            console.log('invalid username')
-            res.redirect('/login')
+            console.log('username not found')
+            res.json({result: false, message: 'username not found'})
         }
     })
 })

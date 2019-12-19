@@ -16,15 +16,11 @@ export default function Register(props) {
             }, 
             body: JSON.stringify(data)});
             let res = await response.json()
-        // //     respF = res.regFeiled
-        // //     respS = res.regSuccess
-        // //    document.getElementById("feil-reg").innerHTML = respF +`<br/>`
-        // //     document.getElementById("success-reg").innerHTML = respS +`<br/>` 
-        console.log(res)
-        // console.log(res.message)   
+           document.getElementById("invalid").innerHTML = `Error:` + res.message +`<br/>`
+           document.getElementById("invalid").style.color = '#F44336'
+        console.log(res.message)  
         if (res.fResult === true){
                 props.history.push('/login')
-                // redirect('/register')
         }
         else{
             props.history.push('/register')
@@ -38,9 +34,10 @@ export default function Register(props) {
         <center>
         <h1>Sign Up for Matcha</h1>
         <form action="" id="regForm" onSubmit = {handleSubmit(onSubmit)}>
-         <input type="email" name="email" id="email" placeholder="Email Address" ref={register}></input><br/>
+         <span id="invalid"></span>
+         <input type="email" name="email" id="email"  placeholder="Email Address" ref={register}></input><br/>
          <input type="text" name="username"  id="userName" placeholder="username" ref={register}></input><br/>
-         <input type="text" name="firstname" id="firstName" placeholder="First Name" onfocusout="ValidateFirstName" ref={register}></input><br/>
+         <input type="text" name="firstname" id="firstName" placeholder="First Name" ref={register}></input><br/>
          <input type="text" name="lastname" id="lastName" placeholder="Lastname" ref={register}></input><br/>
          <input type="password" name="pwd" id="pwd" placeholder="password" ref={register}></input><br/>
          <input type="password" name="pwd1" id="pwd1" placeholder="Confirm password" ref={register} ></input><br/>

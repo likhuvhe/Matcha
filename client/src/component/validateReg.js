@@ -41,7 +41,7 @@ function isEmpty(value){
 }
 
 function setInvalid(field, message){
-    field.claaName = 'invalid'
+    field.className = 'invalid'
     field.nextElementSibling.innerHTML = message
     field.nextElementSibling.style.color = red
 }

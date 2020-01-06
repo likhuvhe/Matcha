@@ -19,12 +19,11 @@ const App = () => {
         <Switch>
         <Route exact path = "/" component={Home}/>
         <Route path="/register" component={Register}/> 
-        <Route path = "/login" component ={Login}/>    
+        <Route path = "/login" component ={Login}/>
         </Switch>
       </Router>
       </Body>
     </div>
   )
 }
-
 export default App

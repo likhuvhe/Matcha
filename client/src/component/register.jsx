@@ -1,7 +1,7 @@
 import React from 'react';
 import useForm from 'react-hook-form';
+import {Form, Button} from 'reactstrap'
 // import importScripts from 'import-scripts'
- 
 // importScripts('validateReg.js')
 
 export default function Register(props) {
@@ -18,7 +18,7 @@ export default function Register(props) {
             let res = await response.json()
            document.getElementById("invalid").innerHTML = `Error:` + res.message +`<br/>`
            document.getElementById("invalid").style.color = '#F44336'
-        console.log(res.message)  
+        console.log(res.message)
         if (res.fResult === true){
                 props.history.push('/login')
         }
@@ -33,7 +33,7 @@ export default function Register(props) {
         
         <center>
         <h1>Sign Up for Matcha</h1>
-        <form action="" id="regForm" onSubmit = {handleSubmit(onSubmit)}>
+        <Form action="" id="regForm" onSubmit = {handleSubmit(onSubmit)}>
          <span id="invalid"></span>
          <input type="email" name="email" id="email"  placeholder="Email Address" ref={register}></input><br/>
          <input type="text" name="username"  id="userName" placeholder="username" ref={register}></input><br/>
@@ -41,8 +41,8 @@ export default function Register(props) {
          <input type="text" name="lastname" id="lastName" placeholder="Lastname" ref={register}></input><br/>
          <input type="password" name="pwd" id="pwd" placeholder="password" ref={register}></input><br/>
          <input type="password" name="pwd1" id="pwd1" placeholder="Confirm password" ref={register} ></input><br/>
-         <button type="submit">Register</button><br/>
-       </form>
+         <Button type="submit">Register</Button><br/>
+       </Form>
         </center>
      </div>
     );

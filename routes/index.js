@@ -127,6 +127,4 @@ router.post('/register', (req, res) => {
     });
     // module.exports = username
 })
-
-
 module.exports = router

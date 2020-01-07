@@ -1,8 +1,7 @@
 import React from 'react';
 import useForm from 'react-hook-form';
 import {Form, Button} from 'reactstrap'
-// import importScripts from 'import-scripts'
-// importScripts('validateReg.js')
+
 
 export default function Register(props) {
     const {register, handleSubmit} = useForm()

@@ -21,12 +21,12 @@ router.get('/register', (req, res) => {
 })
 router.get('/login', (req, res) => {
     // const toconfirm = req.query.vkey
-    //console.log(toconfirm)
+    // console.log(toconfirm)
     db.getDB().collection('users').find({vkey:req.query.vkey}).toArray(function(err, result) {
         if (err) throw err;
         // console.log(result)
         if (result.length >= 1){
-            db.getDB().collection('users').update(
+            db.getDB().collection('users').updateOne(
                 { _id: result[0]._id},
                 { $set:
                     {
@@ -34,11 +34,12 @@ router.get('/login', (req, res) => {
                         vkey: ''
                     }
                 })
+            res.redirect('http://localhost:3000/login')
         } else{
             console.log('invalid token')
+            res.send('invalid token')
         }
     })
-    res.render('./registerLogin/login')
 })
 
 router.post('/login', (req, res) => {
@@ -48,9 +49,9 @@ router.post('/login', (req, res) => {
         if (err) throw err;
         // console.log(result)
         if (result.length >= 1){
-            if (result[0].verified === false){
+            if (result[0].verified === false && bcrypt.compareSync(password, result[0].password)){
                 console.log('please Verify your account')
-                res.json({result: true, message: 'please Verify your account'})
+                res.json({result: false, message: 'please Verify your account'})
             }
             else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
@@ -62,7 +63,7 @@ router.post('/login', (req, res) => {
             }
         } else{
             console.log('username not found')
-            res.json({result: false, message: 'username not found'})
+            res.json({result: false, message: 'username not registered'})
         }
     })
 })

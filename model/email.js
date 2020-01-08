@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 const token = randomstring.generate()
-const confirmAccount = function(email, redirect){
+const confirmAccount = function(email){
     var mailOptions = {
         from: 'matchawtc2019@gmail.com',
         to: email,
@@ -27,4 +27,21 @@ const confirmAccount = function(email, redirect){
       });
 }
 
-module.exports = {confirmAccount, token}
+const resetPassword = function(email){
+  var mailOptions = {
+      from: 'matchawtc2019@gmail.com',
+      to: email,
+      subject: 'Reset Matcha password',
+      html: '<a href=\"http://localhost:5000/resetPwd?vkey='+`${token}`+'"> click here to reset your password </a>'
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+}
+
+module.exports = {confirmAccount, token, resetPassword}

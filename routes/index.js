@@ -20,11 +20,8 @@ router.get('/register', (req, res) => {
     res.render('./registerLogin/register')
 })
 router.get('/login', (req, res) => {
-    // const toconfirm = req.query.vkey
-    // console.log(toconfirm)
     db.getDB().collection('users').find({vkey:req.query.vkey}).toArray(function(err, result) {
         if (err) throw err;
-        // console.log(result)
         if (result.length >= 1){
             db.getDB().collection('users').updateOne(
                 { _id: result[0]._id},
@@ -47,17 +44,14 @@ router.post('/login', (req, res) => {
     const password = req.body.pwd
     db.getDB().collection('users').find({username: username}).toArray(function(err, result){
         if (err) throw err;
-        // console.log(result)
         if (result.length >= 1){
             if (result[0].verified === false && bcrypt.compareSync(password, result[0].password)){
                 console.log('please Verify your account')
                 res.json({result: false, message: 'please Verify your account'})
-            }
-            else if (bcrypt.compareSync(password, result[0].password)){
+            }else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
                 res.json({result:true})
-            }
-            else{
+            }else{
                 console.log('invalid password')
                 res.json({result: false, message:'invalid password'})
             }
@@ -81,17 +75,13 @@ router.post('/register', (req, res) => {
         if (result.length >= 1){
             console.log('username or email alredy exist!')
             res.json({result: false, message:'username or email alredy exist!'})
-        }
-        else{
-            // res.json(regValid.validateEmail(email))
-            // res.json(regValid.validateEmail(email).message)
+        }else{
             if( regValid.validateEmail(email).result === true && 
                 regValid.validateUsername(username).result=== true &&
                 regValid.validateFirstname(firstName).result === true &&
                 regValid.validateLastname(lastName).result === true &&
                 regValid.validatePassword(password).result === true &&
-                regValid.matchPassword(password, req.body.pwd1).result === true)
-            {
+                regValid.matchPassword(password, req.body.pwd1).result === true){
                 bcrypt.hash(password, saltRounds, function(err, hash) {
                     const user = {
                         username: username,
@@ -108,8 +98,7 @@ router.post('/register', (req, res) => {
                   console.log('successfuly registered')
                   res.json({fResult: true})
                   
-            }
-            else{
+            }else{
                 if (regValid.validateEmail(email).result === false){
                     res.json(regValid.validateEmail(email))
                 }else if(regValid.validateUsername(username).result=== false){
@@ -126,6 +115,71 @@ router.post('/register', (req, res) => {
             }
         } 
     });
-    // module.exports = username
 })
+
+router.post('/forgetPwd', (req, res) => {
+    const email = req.body.email
+    const vkey = mails.token;
+    db.getDB().collection(collection).find({email: email}).toArray(function(err, result) {
+        if (err) throw err;
+        if (result.length > 0){
+            db.getDB().collection('users').updateOne(
+                { _id: result[0]._id},
+                { $set:
+                    {
+                        vkey: vkey
+                    }
+                })
+            mails.resetPassword(email)
+        }else{
+            console.log("Email address is not registered")
+        }
+
+    })
+})
+
+router.get('/resetPwd', (req, res) => {
+    db.getDB().collection('users').find({vkey:req.query.vkey}).toArray(function(err, result) {
+                if (err) throw err;
+                if (result.length >= 1){
+                    res.redirect(`http://localhost:3000/forgetPassword/resetPwd?vkey=${req.query.vkey}`)
+                } else{
+                    console.log('invalid token')
+                    res.send('invalid token')
+                }
+            })
+})
+
+router.post('/resetPwd', (req, res) => {
+    const password = req.body.password;
+    const confirmPass = req.body.confirmPass;
+    db.getDB().collection('users').find({vkey:req.body.token}).toArray(function(err, result) {
+        if (err) throw err;
+        if (result.length >= 1){
+            if (regValid.validatePassword(password).result === true &&
+                regValid.matchPassword(password, confirmPass).result === true){
+                bcrypt.hash(password, saltRounds, function(err, hash){
+                    db.getDB().collection('users').updateOne(
+                        { _id: result[0]._id},
+                        { $set:
+                            {
+                                password: hash,
+                                vkey: ''
+                            }
+                        })  
+                })
+                res.json({result: true})
+            }else{
+                if (regValid.validatePassword(password).result === false){
+                    res.json(regValid.validatePassword(password).message)
+                }else{
+                    res.json(regValid.matchPassword(password, req.body.pwd1).message)
+                }
+            }
+        }else{
+            res.json(`You already reset your password <a href="http://localhost:3000/login">click here to login with new password</a>`)
+        }
+    })
+})
+
 module.exports = router

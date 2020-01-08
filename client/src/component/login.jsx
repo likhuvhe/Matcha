@@ -32,6 +32,7 @@ export default function Login(props) {
             <input type="password" name="pwd" id="pwd" placeholder="password" required ref={register}></input><br/>
             <button type="submit">LOG IN</button>
             </form>
+            <p><a href="/forgetPassword/forgetPwd">Forgot password</a></p>
         </div>
     )
 }

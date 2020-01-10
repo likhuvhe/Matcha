@@ -22,7 +22,6 @@ export default function ForgetPwd(props) {
         else{
             props.history.push('/register')
         }
-        
 }
     return (
         <div>

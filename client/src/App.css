@@ -7,32 +7,27 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+nav{
+  background: rgb(56, 56, 65);
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  color: pink;
 }
 
-.App-link {
-  color: #61dafb;
+.backround{
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: purple;
+  min-height: ;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+body{
+  background-image: url(http://dillionharperblog.com/dating-img/1.jpeg);
+
+  background-repeat: no-repeat;
+  height: auto;
+  background-size: cover;
 }

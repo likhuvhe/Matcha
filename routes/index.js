@@ -45,11 +45,13 @@ router.post('/login', (req, res) => {
     db.getDB().collection('users').find({username: username}).toArray(function(err, result){
         if (err) throw err;
         if (result.length >= 1){
+            
             if (result[0].verified === false && bcrypt.compareSync(password, result[0].password)){
                 console.log('please Verify your account')
                 res.json({result: false, message: 'please Verify your account'})
             }else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
+                console(req.session.userId = result[0]._id);
                 res.json({result:true})
             }else{
                 console.log('invalid password')

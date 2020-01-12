@@ -5,10 +5,9 @@ const Home = () => {
     <div className='backround'>
         <br/>
         <p><a href="/register">SIGN UP</a></p>
-        <a href="/login">LOG IN</a><br/>
+        <p>....................OR..................<a href="/login">LOG IN</a></p>
     </div>
     )
 }
 
 export default Home
-    

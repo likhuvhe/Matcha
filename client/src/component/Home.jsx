@@ -2,10 +2,10 @@ import React from 'react'
 
 const Home = () => {
     return (
-    <div className='backround'>
-        <br/>
-        <p><a href="/register">SIGN UP</a></p>
-        <p>....................OR..................<a href="/login">LOG IN</a></p>
+    <div className='backround'>    
+    <br/>
+        <p id='link'><a href="/register" id="link">SIGN UP</a></p>
+        <p id='link'>....................OR..................<a href="/login" id='link'>LOG IN</a></p>
     </div>
     )
 }

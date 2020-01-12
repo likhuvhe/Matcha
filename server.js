@@ -43,3 +43,5 @@ app.use(cookieParser())
 app.use('/', indexRouter);
 
 app.listen(PORT, (err) => console.log(`server is running at port ${PORT}`))
+
+module.exports = SESS_NAME;

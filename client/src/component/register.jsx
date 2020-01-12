@@ -41,6 +41,7 @@ export default function Register(props) {
          <input type="password" name="pwd" id="pwd" placeholder="password" ref={register}></input><br/>
          <input type="password" name="pwd1" id="pwd1" placeholder="Confirm password" ref={register} ></input><br/>
          <Button type="submit">Register</Button><br/>
+         <p>aready have an account?........<a id='link' href='./login'>login!!!!</a></p>
        </Form>
         </center>
      </div>

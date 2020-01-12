@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const router = express.Router()
 const mails = require('../model/email')
 const db = require('../model/db')
+const SESS_NAME = require('../server');
 
 // const emails = require('./model/email')
 const bcrypt = require('bcrypt');
@@ -51,7 +52,7 @@ router.post('/login', (req, res) => {
                 res.json({result: false, message: 'please Verify your account'})
             }else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
-                console.log(req.session.userId = result[0]._id);
+                req.session.userId = result[0]._id;
                 res.json({result:true})
             }else{
                 console.log('invalid password')
@@ -95,10 +96,10 @@ router.post('/register', (req, res) => {
                         verified: verified
                     }
                     db.getDB().collection(collection).insertOne(user)
-                    db.getDB().collection(collection).find({username: username}).toArray(function(err, result) {
-                        if (err) throw err;
-                        req.session.userId = result[0]._id
-                    })
+                    // db.getDB().collection(collection).find({username: username}).toArray(function(err, result) {
+                    //     if (err) throw err;
+                    //     req.session.userId = result[0]._id
+                    // })
                     mails.confirmAccount(email)
                 });
                   console.log('successfuly registered')
@@ -191,13 +192,27 @@ router.post('/userProfile', (req, res) =>{
 
     const ssid = req.session.userId
      console.log(ssid)
-        db.getDB().collection('users').find({id: undefined}).toArray(function(err, result) {
-            if (err) throw err;
-            if (result.length){
-                console.log(result)
-            }
-        })  
+     console.log(SESS_NAME)
+     console.log(req.session)
+
+
+        // db.getDB().collection('users').find({id: undefined}).toArray(function(err, result) {
+        //     if (err) throw err;
+        //     if (result.length){
+        //         console.log(result)
+        //     }
+        // })  
     res.redirect('http://localhost:3000/userProfile')
+})
+
+router.post('/logout', (req, res) => {
+        req.session.destroy(function(err){
+            if (err) throw err;
+        })
+        res.clearCookie('sid')
+        return(
+            res.redirect('/login')
+        )
 })
 
 module.exports = router

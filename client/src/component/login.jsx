@@ -33,6 +33,7 @@ export default function Login(props) {
             <button type="submit">LOG IN</button>
             </form>
             <p><a href="/forgetPassword/forgetPwd">Forgot password</a></p>
+            <p>Dont have an account? then......<a href="./register">Register!!!</a></p>
         </div>
     )
 }

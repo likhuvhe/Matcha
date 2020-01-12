@@ -8,7 +8,7 @@
 }
 
 nav{
-  background: rgb(102, 95, 96);
+  background: rgb(49, 49, 49);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -30,4 +30,9 @@ body, html{
   height: 100%;
   width: 100%;
   background-size: cover;
+}
+
+a{
+  color: pink;
+  text-decoration: none;
 }

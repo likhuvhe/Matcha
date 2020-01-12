@@ -51,7 +51,7 @@ router.post('/login', (req, res) => {
                 res.json({result: false, message: 'please Verify your account'})
             }else if (bcrypt.compareSync(password, result[0].password)){
                 console.log('successfully Logged in')
-                console(req.session.userId = result[0]._id);
+                console.log(req.session.userId = result[0]._id);
                 res.json({result:true})
             }else{
                 console.log('invalid password')
@@ -95,6 +95,10 @@ router.post('/register', (req, res) => {
                         verified: verified
                     }
                     db.getDB().collection(collection).insertOne(user)
+                    db.getDB().collection(collection).find({username: username}).toArray(function(err, result) {
+                        if (err) throw err;
+                        req.session.userId = result[0]._id
+                    })
                     mails.confirmAccount(email)
                 });
                   console.log('successfuly registered')
@@ -168,7 +172,7 @@ router.post('/resetPwd', (req, res) => {
                                 password: hash,
                                 vkey: ''
                             }
-                        })  
+                        })
                 })
                 res.json({result: true})
             }else{
@@ -182,6 +186,18 @@ router.post('/resetPwd', (req, res) => {
             res.json(`You already reset your password <a href="http://localhost:3000/login">click here to login with new password</a>`)
         }
     })
+})
+router.post('/userProfile', (req, res) =>{
+
+    const ssid = req.session.userId
+     console.log(ssid)
+        db.getDB().collection('users').find({id: undefined}).toArray(function(err, result) {
+            if (err) throw err;
+            if (result.length){
+                console.log(result)
+            }
+        })  
+    res.redirect('http://localhost:3000/userProfile')
 })
 
 module.exports = router

@@ -138,8 +138,13 @@ router.post('/forgetPwd', (req, res) => {
                     }
                 })
             mails.resetPassword(email)
+            res.json({result: true})
+        }else if(email === ''){
+            res.json({result: false, message: 'Email required'})
+            console.log("Email required")
         }else{
-            console.log("Email address is not registered")
+            res.json({result: false, message: 'Email not found'})
+            console.log("Email not found")
         }
 
     })

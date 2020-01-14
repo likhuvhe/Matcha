@@ -13,19 +13,26 @@ export default function ForgetPwd(props) {
             }, 
             body: JSON.stringify(data)});
             let res = await response.json()
-           document.getElementById("invalid").innerHTML = `Error:` + res.message +`<br/>`
-           document.getElementById("invalid").style.color = '#F44336'
         console.log(res.message)
-        if (res.fResult === true){
-                props.history.push('/login')
+        if (res.result === true){
+            document.getElementById("invalid").innerHTML = `<span></span>` 
+            document.getElementById("valid").innerHTML = `Email has been sent with instractions to reset your password` +`<br/>`
+            document.getElementById("valid").style.color = '#00ff00'
+            document.getElementById("myForm").reset();
         }
         else{
-            props.history.push('/register')
+            document.getElementById("valid").innerHTML = `<span></span>` 
+            document.getElementById("invalid").innerHTML = `Error:` + res.message +`<br/>`
+            document.getElementById("invalid").style.color = '#F44336'
+            document.getElementById("myForm").reset(); 
         }
+        
 }
     return (
         <div>
-            <form action="" onSubmit = {handleSubmit(onSubmit)}>
+            <form action="" id="myForm" onSubmit = {handleSubmit(onSubmit)}>
+            <span id="invalid"></span>
+            <span id="valid"></span>
                 <input type="email" name="email" placeholder="Enter email Address" ref={register}></input><br/>
                 <button type="submit">submit</button>
             </form>

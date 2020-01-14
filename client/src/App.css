@@ -10,9 +10,14 @@
 nav{
   background: rgb(49, 49, 49);
   display: flex;
+  
   justify-content: space-around;
   align-items: center;
   color: pink;
+  border-top: 100%;
+  margin-top: 0%;
+  margin-left: 0%;
+  width: 100%;
 }
 
 .backround{
@@ -23,13 +28,14 @@ nav{
   color: purple;
 }
 
-body, html{
+body,html{
   background-image: url(http://dillionharperblog.com/dating-img/1.jpeg);
 
   background-repeat: no-repeat;
   height: 100%;
   width: 100%;
-  background-size: cover;
+  background-size: 100% 100%;
+  margin: 0%;
 }
 
 a{

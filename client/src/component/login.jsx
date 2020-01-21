@@ -37,23 +37,3 @@ export default function Login(props) {
         </div>
     )
 }
-// import React, { Component } from 'react'
-
-// class Login extends React.Component{
-
-//     constructor(props){
-//         super(props);
-
-//         this.state = {  jfghfghfgf}
-//     }
-
-//     //state compone
-
-//     render() {
-//         return (
-//             html form 
-//         )
-//     }
-// }
-
-// export default Login;

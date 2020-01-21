@@ -1,9 +1,41 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const router = express.Router()
 const mails = require('../model/email')
 const db = require('../model/db')
-const SESS_NAME = require('../server');
+const {ObjectId} = require('mongodb');
+const multer  = require('multer')
+
+//----------------upload--------------------------------------//
+const storage = multer.diskStorage({
+    destination: (req, file, cb) =>{
+        cb(null, './uploads/')
+    },
+    filename: (req, file, cb)=>{
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+})
+const fileFilter = (req, file, cb)=>{
+    
+    if (file.mimetype ==='image/jpeg'||
+        file.mimetype ==='image/jpg' ||
+        file.mimetype ==='image/png' ||
+        file.mimetype ==='image/gif'){
+        cb(null,true)
+    }else{
+         cb('image format not accepted',false)
+    }
+}
+const upload = multer({ storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+})
+//---------------end upload-----------------------------------//
+
+// SET STORAGE
+
 
 // const emails = require('./model/email')
 const bcrypt = require('bcrypt');
@@ -194,19 +226,20 @@ router.post('/resetPwd', (req, res) => {
     })
 })
 router.post('/userProfile', (req, res) =>{
+    const ssid = ObjectId(req.session.userId)
 
-    const ssid = req.session.userId
+
      console.log(ssid)
-     console.log(SESS_NAME)
+    
      console.log(req.session)
 
 
-        // db.getDB().collection('users').find({id: undefined}).toArray(function(err, result) {
-        //     if (err) throw err;
-        //     if (result.length){
-        //         console.log(result)
-        //     }
-        // })  
+        db.getDB().collection('users').find({_id: ssid}).toArray(function(err, result) {
+            if (err) throw err;
+            if (result.length){
+                console.log(result)
+            }
+        })  
     res.redirect('http://localhost:3000/userProfile')
 })
 
@@ -218,6 +251,16 @@ router.post('/logout', (req, res) => {
         return(
             res.redirect('/login')
         )
+})
+router.get('/uploadImage',(req, res, next) =>{
+    res.render(
+        './uploadImage'
+    )
+})
+router.post('/uploadImage', upload.single('pic'), (req, res, next) =>{
+    console.log(req.file)
+    //console.log(req.body)
+    res.redirect('/uploadImage')
 })
 
 module.exports = router

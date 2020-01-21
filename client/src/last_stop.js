@@ -12,6 +12,7 @@ import {
   Route
 } from "react-router-dom";
 import Body from './component/Body';
+import UploadImage from './component/uploadImage'
 
 const Last_stop = () => {
   return (
@@ -25,6 +26,7 @@ const Last_stop = () => {
         <Route path = "/userProfile" component ={UserProfile}/>
         <Route path = "/forgetPassword/forgetPwd" component={ForgetPwd}/>
         <Route path = "/forgetPassword/resetPwd" component={ResetPwd}/>
+        <Route path = "/uploadImage" component ={UploadImage}/>
         </Switch>
       </Router>
       </Body>

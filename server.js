@@ -34,6 +34,9 @@ app.use(session({
         secure: IN_PROD,
     }
 }))
+
+
+
 app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -43,5 +46,3 @@ app.use(cookieParser())
 app.use('/', indexRouter);
 
 app.listen(PORT, (err) => console.log(`server is running at port ${PORT}`))
-
-module.exports = SESS_NAME;

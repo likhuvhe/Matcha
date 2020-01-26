@@ -16,14 +16,15 @@ const storage = multer.diskStorage({
     }
 })
 const fileFilter = (req, file, cb)=>{
-    
+    console.log(file)
+    console.log(res.file)
     if (file.mimetype ==='image/jpeg'||
         file.mimetype ==='image/jpg' ||
         file.mimetype ==='image/png' ||
         file.mimetype ==='image/gif'){
-        cb(null,true)
+        (cb(null,true))
     }else{
-         cb('image format not accepted',false)
+        cb('image format not accepted',false)
     }
 }
 const upload = multer({ storage: storage,
@@ -259,8 +260,15 @@ router.get('/uploadImage',(req, res, next) =>{
 })
 router.post('/uploadImage', upload.single('pic'), (req, res, next) =>{
     console.log(req.file)
-    //console.log(req.body)
-    res.redirect('/uploadImage')
+    
+    if (req.file === undefined){
+        console.log('please select image to upload')
+        res.json({result: false, message: 'please select image to upload'})
+    }else if(req.file){
+        res.json({result: true, message: 'upload success'})
+    }else{
+        res.json({result: false, message: 'invalid file'})
+    }
 })
 
 module.exports = router

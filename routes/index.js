@@ -8,28 +8,28 @@ const multer  = require('multer')
 
 //----------------upload--------------------------------------//
 const storage = multer.diskStorage({
-    destination: (req, file, cb) =>{
+    destination: (req, files, cb) =>{
+        console.log(files)
         cb(null, './uploads/')
     },
-    filename: (req, file, cb)=>{
-        cb(null, new Date().toISOString() + file.originalname);
+    filename: (req, files, cb)=>{
+        cb(null, new Date().toISOString() + files.originalname);
     }
 })
-const fileFilter = (req, file, cb)=>{
-    console.log(file)
-    console.log(res.file)
-    if (file.mimetype ==='image/jpeg'||
-        file.mimetype ==='image/jpg' ||
-        file.mimetype ==='image/png' ||
-        file.mimetype ==='image/gif'){
+const fileFilter = (req, files, cb)=>{
+    if (files.mimetype ==='image/jpeg'||
+        files.mimetype ==='image/jpg' ||
+        files.mimetype ==='image/png' ||
+        files.mimetype ==='image/gif'){
         (cb(null,true))
     }else{
-        cb('image format not accepted',false)
+        // cb('image format not accepted',false)
+        cb(null, false)
     }
 }
 const upload = multer({ storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 5
+        fileSize: 1024 * 1024 * 1024 * 5
     },
     fileFilter: fileFilter
 })
@@ -258,16 +258,13 @@ router.get('/uploadImage',(req, res, next) =>{
         './uploadImage'
     )
 })
-router.post('/uploadImage', upload.single('pic'), (req, res, next) =>{
-    console.log(req.file)
-    
-    if (req.file === undefined){
-        console.log('please select image to upload')
-        res.json({result: false, message: 'please select image to upload'})
-    }else if(req.file){
-        res.json({result: true, message: 'upload success'})
+router.post('/uploadImage', upload.array('pic', 5), (req, res, next) =>{
+        
+    if (req.files.length === 0){
+        console.log('invalid image')
+        res.json({result: false, message: 'invalid image'})
     }else{
-        res.json({result: false, message: 'invalid file'})
+        res.json({result: true, message: `${req.files.length}     uploaded success`})
     }
 })
 

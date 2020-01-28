@@ -18,12 +18,13 @@ const confirmAccount = function(email){
         html: '<a href=\"http://localhost:5000/login?vkey='+`${token}`+'"> click here to activate your acount </a>'
       };
       
-      transporter.sendMail(mailOptions, function(error, info){
+      transporter.sendMail(mailOptions, async (error, info) => {
         if (error) {
-          console.log(error);
+          console.erro(error.message);
         } else {
           console.log('Email sent: ' + info.response);
         }
+      
       });
 }
 

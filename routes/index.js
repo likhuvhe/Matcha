@@ -35,10 +35,7 @@ const upload = multer({ storage: storage,
 })
 //---------------end upload-----------------------------------//
 
-// SET STORAGE
 
-
-// const emails = require('./model/email')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -258,13 +255,13 @@ router.get('/uploadImage',(req, res, next) =>{
         './uploadImage'
     )
 })
-router.post('/uploadImage', upload.array('pic', 5), (req, res, next) =>{
+router.post('/uploadImage', upload.array('pic'), (req, res, next) =>{
         
     if (req.files.length === 0){
         console.log('invalid image')
         res.json({result: false, message: 'invalid image'})
     }else{
-        res.json({result: true, message: `${req.files.length}     uploaded success`})
+        res.json({result: true, message: `${req.files.length}  image uploaded successufly`})
     }
 })
 
